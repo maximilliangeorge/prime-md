@@ -1,0 +1,8 @@
+remotes:
+  descartes: github.com/descartes/meditations
+  gettier: github.com/gettier/original-paper@abc123def
+  custom-ref: github.com/owner/repo/develop
+
+exports:
+  - cogito.md
+  - existence-of-god.md

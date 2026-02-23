@@ -1,0 +1,158 @@
+import type { PrimeNode, PrimeManifest, PremiseRef, PrimeUri } from "./types.js";
+import { isAliasUri } from "./types.js";
+import { parseUri, expandAlias } from "./uri.js";
+import { ensureCached, readCachedFile } from "./cache.js";
+import { parseNodeFromContent } from "./parse.js";
+
+function canonicalUri(uri: PrimeUri): string {
+  return `prime://${uri.host}/${uri.owner}/${uri.repo}/${uri.ref}/${uri.path}`;
+}
+
+function resolveUriFromRaw(
+  raw: string,
+  manifest: PrimeManifest
+): PrimeUri | string {
+  const parsed = parseUri(raw);
+  if (!parsed) {
+    return `Invalid prime URI: ${raw}`;
+  }
+
+  if (isAliasUri(parsed)) {
+    const expanded = expandAlias(parsed, manifest);
+    if (!expanded) {
+      return `Unknown alias: @${parsed.alias}`;
+    }
+    return expanded;
+  }
+
+  return parsed;
+}
+
+export async function resolveAllPremises(
+  nodes: PrimeNode[],
+  rootDir: string,
+  manifest: PrimeManifest,
+  maxDepth: number = -1
+): Promise<PrimeNode[]> {
+  const visited = new Set<string>();
+  const remoteNodes: PrimeNode[] = [];
+
+  for (const node of nodes) {
+    for (const premise of node.premises) {
+      if (premise.kind === "remote") {
+        await resolveRemotePremise(
+          premise,
+          manifest,
+          visited,
+          remoteNodes,
+          0,
+          maxDepth
+        );
+      }
+    }
+  }
+
+  return remoteNodes;
+}
+
+async function resolveRemotePremise(
+  premise: PremiseRef,
+  manifest: PrimeManifest,
+  visited: Set<string>,
+  remoteNodes: PrimeNode[],
+  currentDepth: number,
+  maxDepth: number
+): Promise<void> {
+  const result = resolveUriFromRaw(premise.raw, manifest);
+  if (typeof result === "string") {
+    premise.error = result;
+    return;
+  }
+
+  const uri = result;
+  premise.uri = uri;
+  const canonical = canonicalUri(uri);
+  premise.resolvedPath = canonical;
+
+  if (visited.has(canonical)) {
+    return;
+  }
+  visited.add(canonical);
+
+  try {
+    const cacheDir = await ensureCached(uri);
+    const content = await readCachedFile(uri, cacheDir);
+    if (content === null) {
+      premise.error = `Remote file not found: ${uri.path} in ${uri.host}/${uri.owner}/${uri.repo}@${uri.ref}`;
+      return;
+    }
+
+    // Parse the remote content into a node
+    const remoteNode = parseNodeFromContent(content, canonical, canonical);
+    // Fix relativePath to be the URI path component
+    remoteNode.relativePath = uri.path;
+
+    // Resolve premises within the remote node
+    for (const remotePremise of remoteNode.premises) {
+      if (remotePremise.kind === "remote") {
+        if (maxDepth === -1 || currentDepth + 1 < maxDepth) {
+          await resolveRemotePremise(
+            remotePremise,
+            manifest,
+            visited,
+            remoteNodes,
+            currentDepth + 1,
+            maxDepth
+          );
+        }
+      } else if (remotePremise.kind === "local") {
+        // Local premise within a remote repo — rewrite as a remote URI in the same repo
+        const localPath = remotePremise.raw.replace(/^\.\//, "");
+        const basePath = uri.path.includes("/")
+          ? uri.path.substring(0, uri.path.lastIndexOf("/") + 1)
+          : "";
+        const resolvedRemotePath = basePath + localPath;
+
+        const syntheticUri: PrimeUri = {
+          host: uri.host,
+          owner: uri.owner,
+          repo: uri.repo,
+          ref: uri.ref,
+          commit: uri.commit,
+          path: resolvedRemotePath,
+          immutable: uri.immutable,
+        };
+
+        const syntheticCanonical = canonicalUri(syntheticUri);
+        remotePremise.resolvedPath = syntheticCanonical;
+        remotePremise.kind = "remote";
+        remotePremise.uri = syntheticUri;
+
+        if (!visited.has(syntheticCanonical)) {
+          if (maxDepth === -1 || currentDepth + 1 < maxDepth) {
+            const syntheticPremise: PremiseRef = {
+              kind: "remote",
+              raw: `prime://${syntheticUri.host}/${syntheticUri.owner}/${syntheticUri.repo}/${syntheticUri.ref}/${syntheticUri.path}`,
+              resolvedPath: null,
+              uri: syntheticUri,
+            };
+
+            await resolveRemotePremise(
+              syntheticPremise,
+              manifest,
+              visited,
+              remoteNodes,
+              currentDepth + 1,
+              maxDepth
+            );
+          }
+        }
+      }
+    }
+
+    remoteNodes.push(remoteNode);
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    premise.error = `Failed to resolve remote: ${premise.raw} — ${msg}`;
+  }
+}
