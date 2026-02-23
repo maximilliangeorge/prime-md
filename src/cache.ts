@@ -26,7 +26,7 @@ export async function ensureCached(uri: PrimeUri): Promise<string> {
     // Already cloned — fetch if mutable
     if (!uri.immutable) {
       const git = simpleGit(cacheDir);
-      await git.fetch(["origin"]);
+      await git.fetch(["origin", "+refs/heads/*:refs/heads/*"]);
     }
   } else {
     // Bare clone
@@ -43,7 +43,7 @@ export async function readCachedFile(
   cacheDir: string
 ): Promise<string | null> {
   const git = simpleGit(cacheDir);
-  const ref = uri.commit || `origin/${uri.ref}`;
+  const ref = uri.commit || uri.ref;
 
   try {
     const content = await git.show([`${ref}:${uri.path}`]);
