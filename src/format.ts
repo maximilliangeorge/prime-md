@@ -1,6 +1,4 @@
-import * as fs from 'node:fs'
 import chalk from 'chalk'
-import matter from 'gray-matter'
 import type { ArgumentGraph, PrimeNode } from './types.js'
 
 const ARG_COLORS = [
@@ -494,17 +492,9 @@ export function formatNodeDetail(node: PrimeNode): string[] {
     }
   }
 
-  // Read body from file if it exists on disk
-  try {
-    const content = fs.readFileSync(node.filePath, 'utf-8')
-    const { content: body } = matter(content)
-    const bodyWithoutH1 = body.replace(/^#\s+.+\n?/, '').trim()
-    if (bodyWithoutH1) {
-      lines.push('──────────────────────────────────────')
-      lines.push(...bodyWithoutH1.split('\n'))
-    }
-  } catch {
-    // File might be a remote node or inaccessible — skip body
+  if (node.body) {
+    lines.push('──────────────────────────────────────')
+    lines.push(...node.body.split('\n'))
   }
 
   return lines

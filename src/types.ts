@@ -31,6 +31,7 @@ export interface PrimeNode {
   filePath: string;
   relativePath: string;
   claim: string | null;
+  body: string | null;
   premises: PremiseRef[];
   isAxiom: boolean;
 }

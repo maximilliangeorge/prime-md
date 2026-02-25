@@ -22,6 +22,8 @@ export function parseNodeFromContent(
   const h1Match = content.match(H1_REGEX);
   const claim = h1Match ? h1Match[1].trim() : null;
 
+  const bodyWithoutH1 = body.replace(/^#\s+.+\n?/, '').trim() || null;
+
   const rawPremises: string[] = Array.isArray(data.premises)
     ? data.premises
     : [];
@@ -40,6 +42,7 @@ export function parseNodeFromContent(
     filePath,
     relativePath,
     claim,
+    body: bodyWithoutH1,
     premises,
     isAxiom: premises.length === 0,
   };
