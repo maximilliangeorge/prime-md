@@ -16,7 +16,7 @@ What makes a premise false? It, in turn, relies on an either _invalid_ argument 
 
 In Prime, we store each claim as a Markdown file in a Git repository. Git already solves the hard problems: versioning, integrity, distribution, attribution. Repositories can reference each other — so an argument in one repo can cite a premise in another, across authors, institutions, and time. The graph is not trapped in one database or one jurisdiction. It lives where code lives, and it moves the way code moves. And I hope Prime can make reason scale the way code scales.
 
-So, what is Prime? At the end of the day, Prime is just a convention for writing arguments in Markdown, stored in Git repositories + a set of tools that makes it possible to do so collaboratively at scale. Thank you for coming to my TED talk.
+So, what is Prime? At the end of the day, Prime is just a convention for writing arguments in Markdown, stored in Git repositories + a set of tools that makes it possible to do so collaboratively at scale. Still with me? Keep reading.
 
 ## Usage
 
