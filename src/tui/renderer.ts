@@ -2,7 +2,7 @@ import chalk from 'chalk'
 import type { TuiState } from './state.js'
 import { countArguments } from '../format.js'
 
-const HEADER_LINES = 2  // status bar + separator
+const HEADER_LINES = 2 // status bar + separator
 const FOOTER_LINES = 0
 
 /**
@@ -16,7 +16,15 @@ function viewportHeight(state: TuiState): number {
  * Render the browser screen as an array of strings (one per terminal row).
  */
 export function renderBrowser(state: TuiState): string[] {
-  const { graph, lines, cursorIndex, scrollOffset, selectableIndices, viewMode, cols } = state
+  const {
+    graph,
+    lines,
+    cursorIndex,
+    scrollOffset,
+    selectableIndices,
+    viewMode,
+    cols,
+  } = state
   const vh = viewportHeight(state)
 
   const nodeCount = graph.nodes.size
@@ -72,7 +80,7 @@ export function renderDetail(state: TuiState): string[] {
   const title = node?.claim ?? node?.relativePath ?? ''
 
   const left = ` ${title}`
-  const right = 'q back  esc back'
+  const right = 'q/esc back'
   const padding = Math.max(0, cols - left.length - right.length)
   const statusBar = chalk.inverse(left + ' '.repeat(padding) + right)
   const separator = chalk.dim('─'.repeat(cols))
