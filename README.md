@@ -2,7 +2,7 @@
 
 (THIS IS STILL A DRAFT)
 
-A machine-readable graph of knowledge claims, built on Git and Markdown.
+A machine-readable graph of truth claims, built on Git and Markdown.
 
 ## What is Prime?
 
@@ -14,11 +14,9 @@ A _valid_ argument is one where its conclusion follows from its premises. Validi
 
 If a premise is false, the argument is not _invalid_ but it is _unsound_. The structure still holds; the foundation does not.
 
-What makes a premise false? It, in turn, relies on an either _invalid_ argument or _unsound_ premises – or both. Every claim rests on other claims — and the rot can enter at any level.
+What makes a premise false? It, in turn, relies on an either _invalid_ argument or _unsound_ premises (or both). Every claim rests on other claims and the rot can enter at any level. In the world of code might call this a dependency graph. A graph can be traversed, and indexed by machine. Follow the chain down and you hit bedrock: unsupported claims, ie. axiomatic truths that can be accepted without argument – or can they?
 
-In the world of code might call this a dependency graph. A graph can be traversed, and indexed by machine. Follow the chain down and you hit bedrock: unsupported claims; axiomatic truths that can be accepted without argument (?)
-
-Prime stores each claim as a Markdown file in a Git repository. Git already solves the hard problems: versioning, integrity, distribution, attribution. Every commit is a cryptographic snapshot. Every clone is a full copy. Repositories can reference each other — so an argument in one repo can cite a premise in another, across authors, institutions, and time. The graph is not trapped in one database or one jurisdiction. It lives where code lives, and it moves the way code moves. And I hope Prime can make reason scale the way code can.
+In Prime, we store each claim as a Markdown file in a Git repository. Git already solves the hard problems: versioning, integrity, distribution, attribution. Repositories can reference each other — so an argument in one repo can cite a premise in another, across authors, institutions, and time. The graph is not trapped in one database or one jurisdiction. It lives where code lives, and it moves the way code moves. And I hope Prime can make reason scale the way code scales.
 
 ## Usage
 
