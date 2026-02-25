@@ -28,6 +28,10 @@ function resolveUriFromRaw(
   return parsed;
 }
 
+export function hasRemotePremises(nodes: PrimeNode[]): boolean {
+  return nodes.some((n) => n.premises.some((p) => p.kind === "remote"));
+}
+
 export async function resolveAllPremises(
   nodes: PrimeNode[],
   rootDir: string,

@@ -1,6 +1,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import chalk from "chalk";
+import ora from "ora";
 import matter from "gray-matter";
 import { parseNodeFromContent } from "../parse.js";
 import { parseUri, expandAlias } from "../uri.js";
@@ -34,17 +35,19 @@ export async function showCommand(reference: string): Promise<void> {
       uri = parsed;
     }
 
+    const spinner = ora(`Fetching ${uri.owner}/${uri.repo}…`).start();
     try {
       const cacheDir = await ensureCached(uri);
       const result = await readCachedFile(uri, cacheDir);
       if (result === null) {
-        console.error(chalk.red(`Remote file not found: ${uri.path}`));
+        spinner.fail(`Remote file not found: ${uri.path}`);
         process.exit(1);
       }
       content = result;
+      spinner.succeed("Fetched remote node");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
-      console.error(chalk.red(`Failed to fetch remote: ${msg}`));
+      spinner.fail(`Failed to fetch remote: ${msg}`);
       process.exit(1);
     }
 
