@@ -26,7 +26,7 @@ No installation required – run with `npx`:
 pnpm dev browse https://github.com/maximilliangeorge/prime-demo-cogito
 ```
 
-```sh
+```
 > The external world exists
   ├─ Clear and distinct perceptions are reliably true
   │  ├─ Clear and distinct perception can serve as a criterion of truth
