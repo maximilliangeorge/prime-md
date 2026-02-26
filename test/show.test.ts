@@ -40,7 +40,7 @@ Body text here.`;
   it("parses remote premise references", () => {
     const content = `---
 premises:
-  - prime://github.com/org/repo/main/node.md
+  - https://github.com/org/repo/blob/main/node.md
 ---
 
 # Node with remote dep`;
@@ -49,7 +49,7 @@ premises:
     expect(node.premises).toHaveLength(1);
     expect(node.premises[0].kind).toBe("remote");
     expect(node.premises[0].raw).toBe(
-      "prime://github.com/org/repo/main/node.md"
+      "https://github.com/org/repo/blob/main/node.md"
     );
   });
 
@@ -60,14 +60,14 @@ premises:
     expect(node.claim).toBeNull();
   });
 
-  it("works with a prime URI as filePath (remote scenario)", () => {
+  it("works with a GitHub URL as filePath (remote scenario)", () => {
     const content = `# Remote axiom
 
 Some body.`;
-    const uri = "prime://github.com/org/repo/main/axiom.md";
-    const node = parseNodeFromContent(content, uri, uri);
+    const url = "https://github.com/org/repo/blob/main/axiom.md";
+    const node = parseNodeFromContent(content, url, url);
 
     expect(node.claim).toBe("Remote axiom");
-    expect(node.filePath).toBe(uri);
+    expect(node.filePath).toBe(url);
   });
 });

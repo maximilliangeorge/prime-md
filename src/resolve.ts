@@ -1,12 +1,8 @@
 import type { PrimeNode, PrimeManifest, PremiseRef, PrimeUri } from "./types.js";
 import { isAliasUri } from "./types.js";
-import { parseUri, expandAlias } from "./uri.js";
+import { parseUri, expandAlias, canonicalUrl } from "./uri.js";
 import { ensureCached, readCachedFile } from "./cache.js";
 import { parseNodeFromContent } from "./parse.js";
-
-function canonicalUri(uri: PrimeUri): string {
-  return `prime://${uri.host}/${uri.owner}/${uri.repo}/${uri.ref}/${uri.path}`;
-}
 
 function resolveUriFromRaw(
   raw: string,
@@ -14,7 +10,7 @@ function resolveUriFromRaw(
 ): PrimeUri | string {
   const parsed = parseUri(raw);
   if (!parsed) {
-    return `Invalid prime URI: ${raw}`;
+    return `Invalid remote reference: ${raw}`;
   }
 
   if (isAliasUri(parsed)) {
@@ -75,7 +71,7 @@ async function resolveRemotePremise(
 
   const uri = result;
   premise.uri = uri;
-  const canonical = canonicalUri(uri);
+  const canonical = canonicalUrl(uri);
   premise.resolvedPath = canonical;
 
   if (visited.has(canonical)) {
@@ -115,7 +111,7 @@ async function resolveRemotePremise(
         const basePath = uri.path.includes("/")
           ? uri.path.substring(0, uri.path.lastIndexOf("/") + 1)
           : "";
-        const resolvedRemotePath = basePath + localPath;
+        const resolvedPath = basePath + localPath;
 
         const syntheticUri: PrimeUri = {
           host: uri.host,
@@ -123,11 +119,11 @@ async function resolveRemotePremise(
           repo: uri.repo,
           ref: uri.ref,
           commit: uri.commit,
-          path: resolvedRemotePath,
+          path: resolvedPath,
           immutable: uri.immutable,
         };
 
-        const syntheticCanonical = canonicalUri(syntheticUri);
+        const syntheticCanonical = canonicalUrl(syntheticUri);
         remotePremise.resolvedPath = syntheticCanonical;
         remotePremise.kind = "remote";
         remotePremise.uri = syntheticUri;
@@ -136,7 +132,7 @@ async function resolveRemotePremise(
           if (maxDepth === -1 || currentDepth + 1 < maxDepth) {
             const syntheticPremise: PremiseRef = {
               kind: "remote",
-              raw: `prime://${syntheticUri.host}/${syntheticUri.owner}/${syntheticUri.repo}/${syntheticUri.ref}/${syntheticUri.path}`,
+              raw: syntheticCanonical,
               resolvedPath: null,
               uri: syntheticUri,
             };

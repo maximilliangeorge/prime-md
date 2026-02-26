@@ -30,14 +30,14 @@ program
 program
   .command("graph")
   .argument("[directory]", "local directory or remote URL", ".")
-  .option("-f, --format <format>", "output format: list, tree, dot, json", "list")
+  .option("-f, --format <format>", "output format: list, tree, dot, json, refs", "list")
   .option("-d, --depth <depth>", "max tree depth (tree format only)", parseInt)
   .description("Display the argument graph")
   .action(graphCommand);
 
 program
   .command("show")
-  .argument("<reference>", "local path or prime:// URI")
+  .argument("<reference>", "local path or GitHub URL")
   .description("Show the content of a node")
   .action(showCommand);
 

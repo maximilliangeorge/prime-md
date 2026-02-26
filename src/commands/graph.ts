@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import ora from "ora";
 import { buildGraph } from "../graph-builder.js";
-import { formatList, formatTree, formatDot, formatJson } from "../format.js";
+import { formatList, formatTree, formatDot, formatJson, formatRefs } from "../format.js";
 import { loadRepoSource } from "../repo-source.js";
 
 export async function graphCommand(
@@ -35,6 +35,13 @@ export async function graphCommand(
     process.exit(1);
   }
 
+  if (options.depth !== undefined && options.format === "refs") {
+    console.error(
+      chalk.red("--depth is not supported with refs format (-f refs)")
+    );
+    process.exit(1);
+  }
+
   switch (options.format) {
     case "dot":
       console.log(formatDot(graph));
@@ -44,6 +51,9 @@ export async function graphCommand(
       break;
     case "tree":
       console.log(formatTree(graph, { maxDepth: options.depth }));
+      break;
+    case "refs":
+      console.log(formatRefs(graph));
       break;
     case "list":
     default:

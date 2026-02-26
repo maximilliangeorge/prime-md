@@ -14,11 +14,11 @@ export async function showCommand(reference: string): Promise<void> {
   let content: string;
   let node: PrimeNode;
 
-  if (reference.startsWith("prime://") || reference.startsWith("https://")) {
+  if (reference.startsWith("https://") || reference.startsWith("@")) {
     // Remote URI
     const parsed = parseUri(reference);
     if (!parsed) {
-      console.error(chalk.red(`Invalid prime URI: ${reference}`));
+      console.error(chalk.red(`Invalid reference: ${reference}`));
       process.exit(1);
     }
 
@@ -51,7 +51,7 @@ export async function showCommand(reference: string): Promise<void> {
       process.exit(1);
     }
 
-    const syntheticPath = `prime://${uri.host}/${uri.owner}/${uri.repo}/${uri.ref}/${uri.path}`;
+    const syntheticPath = `https://${uri.host}/${uri.owner}/${uri.repo}/blob/${uri.ref}/${uri.path}`;
     node = parseNodeFromContent(content, syntheticPath, syntheticPath);
   } else {
     // Local path

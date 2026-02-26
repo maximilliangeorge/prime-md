@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import * as path from 'node:path'
 import { parseNode } from '../src/parse.js'
 import { buildGraph } from '../src/graph-builder.js'
-import { formatTree, formatDot, formatJson } from '../src/format.js'
+import { formatTree, formatDot, formatJson, formatRefs } from '../src/format.js'
 
 const fixtures = path.resolve(__dirname, 'fixtures')
 
@@ -43,6 +43,69 @@ describe('formatDot', () => {
     expect(output).toContain('shape=ellipse') // non-axioms
     expect(output).toContain('->') // edges
     expect(output.trim()).toMatch(/}$/) // closes the digraph
+  })
+})
+
+describe('formatRefs', () => {
+  it('outputs one relative path per line for local nodes', () => {
+    const graph = buildValidTreeGraph()
+    const output = formatRefs(graph)
+    const lines = output.split('\n')
+
+    expect(lines).toHaveLength(3)
+    expect(lines).toContain('cogito.md')
+    expect(lines).toContain('thinking-is-self-evident.md')
+    expect(lines).toContain('doubt-presupposes-a-doubter.md')
+  })
+
+  it('outputs refs in sorted order', () => {
+    const graph = buildValidTreeGraph()
+    const output = formatRefs(graph)
+    const lines = output.split('\n')
+
+    const sorted = [...lines].sort()
+    expect(lines).toEqual(sorted)
+  })
+
+  it('outputs GitHub URLs for remote nodes', () => {
+    const graph = buildValidTreeGraph()
+    const remoteUrl = 'https://github.com/owner/repo/blob/main/axiom.md'
+    graph.nodes.set(remoteUrl, {
+      filePath: remoteUrl,
+      relativePath: 'axiom.md',
+      claim: 'Remote axiom',
+      body: null,
+      premises: [],
+      isAxiom: true,
+    })
+
+    const output = formatRefs(graph)
+    const lines = output.split('\n')
+
+    expect(lines).toContain(remoteUrl)
+    expect(lines).toContain('cogito.md')
+  })
+
+  it('handles remote nodes with nested paths', () => {
+    const graph = buildGraph([])
+    const remoteUrl = 'https://github.com/owner/repo/blob/main/dir/nested/claim.md'
+    graph.nodes.set(remoteUrl, {
+      filePath: remoteUrl,
+      relativePath: 'dir/nested/claim.md',
+      claim: 'Nested claim',
+      body: null,
+      premises: [],
+      isAxiom: true,
+    })
+
+    const output = formatRefs(graph)
+    expect(output).toBe(remoteUrl)
+  })
+
+  it('returns empty string for empty graph', () => {
+    const graph = buildGraph([])
+    const output = formatRefs(graph)
+    expect(output).toBe('')
   })
 })
 

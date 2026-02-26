@@ -4,47 +4,6 @@ import { isAliasUri } from "../src/types.js";
 import type { PrimeAliasUri, PrimeManifest, PrimeUri } from "../src/types.js";
 
 describe("parseUri", () => {
-  it("parses mutable URI", () => {
-    const uri = parseUri("prime://github.com/owner/repo/main/path/to/file.md");
-    expect(uri).not.toBeNull();
-    expect(isAliasUri(uri!)).toBe(false);
-    const u = uri as PrimeUri;
-    expect(u.host).toBe("github.com");
-    expect(u.owner).toBe("owner");
-    expect(u.repo).toBe("repo");
-    expect(u.ref).toBe("main");
-    expect(u.path).toBe("path/to/file.md");
-    expect(u.commit).toBeNull();
-    expect(u.immutable).toBe(false);
-  });
-
-  it("parses immutable URI", () => {
-    const uri = parseUri("prime://github.com/owner/repo@abc123/path/to/file.md");
-    expect(uri).not.toBeNull();
-    const u = uri as PrimeUri;
-    expect(u.host).toBe("github.com");
-    expect(u.owner).toBe("owner");
-    expect(u.repo).toBe("repo");
-    expect(u.ref).toBe("abc123");
-    expect(u.commit).toBe("abc123");
-    expect(u.path).toBe("path/to/file.md");
-    expect(u.immutable).toBe(true);
-  });
-
-  it("parses alias URI", () => {
-    const uri = parseUri("prime://@descartes/cogito.md");
-    expect(uri).not.toBeNull();
-    expect(isAliasUri(uri!)).toBe(true);
-    const u = uri as PrimeAliasUri;
-    expect(u.alias).toBe("descartes");
-    expect(u.path).toBe("cogito.md");
-  });
-
-  it("returns null for invalid URI", () => {
-    expect(parseUri("https://example.com")).toBeNull();
-    expect(parseUri("not-a-uri")).toBeNull();
-  });
-
   it("parses GitHub blob URL", () => {
     const uri = parseUri("https://github.com/owner/repo/blob/main/path/to/file.md");
     expect(uri).not.toBeNull();
@@ -69,23 +28,37 @@ describe("parseUri", () => {
     expect(u.path).toBe("cogito.md");
   });
 
+  it("parses alias reference", () => {
+    const uri = parseUri("@descartes/cogito.md");
+    expect(uri).not.toBeNull();
+    expect(isAliasUri(uri!)).toBe(true);
+    const u = uri as PrimeAliasUri;
+    expect(u.alias).toBe("descartes");
+    expect(u.path).toBe("cogito.md");
+  });
+
   it("returns null for non-blob GitHub URL", () => {
     expect(parseUri("https://github.com/owner/repo")).toBeNull();
     expect(parseUri("https://github.com/owner/repo/tree/main")).toBeNull();
+  });
+
+  it("returns null for invalid input", () => {
+    expect(parseUri("https://example.com")).toBeNull();
+    expect(parseUri("not-a-uri")).toBeNull();
   });
 });
 
 describe("expandAlias", () => {
   const manifest: PrimeManifest = {
     remotes: {
-      descartes: "github.com/descartes/meditations",
-      gettier: "github.com/gettier/original-paper@abc123def",
-      custom: "github.com/owner/repo/develop",
+      descartes: "https://github.com/descartes/meditations",
+      gettier: "https://github.com/gettier/original-paper@abc123def",
+      custom: "https://github.com/owner/repo/tree/develop",
     },
     exports: [],
   };
 
-  it("expands alias with host/owner/repo remote (defaults to main)", () => {
+  it("expands alias with bare repo URL (defaults to main)", () => {
     const alias: PrimeAliasUri = { alias: "descartes", path: "cogito.md" };
     const result = expandAlias(alias, manifest);
     expect(result).not.toBeNull();
@@ -98,16 +71,15 @@ describe("expandAlias", () => {
     expect(result!.immutable).toBe(false);
   });
 
-  it("expands alias with commit ref (immutable)", () => {
+  it("expands alias with @ref", () => {
     const alias: PrimeAliasUri = { alias: "gettier", path: "paper.md" };
     const result = expandAlias(alias, manifest);
     expect(result).not.toBeNull();
-    expect(result!.commit).toBe("abc123def");
-    expect(result!.immutable).toBe(true);
     expect(result!.ref).toBe("abc123def");
+    expect(result!.path).toBe("paper.md");
   });
 
-  it("expands alias with custom ref", () => {
+  it("expands alias with tree URL ref", () => {
     const alias: PrimeAliasUri = { alias: "custom", path: "file.md" };
     const result = expandAlias(alias, manifest);
     expect(result).not.toBeNull();
@@ -149,21 +121,6 @@ describe("parseRepoUri", () => {
     expect(uri!.ref).toBe("develop");
   });
 
-  it("parses prime:// repo URI", () => {
-    const uri = parseRepoUri("prime://github.com/owner/repo/main");
-    expect(uri).not.toBeNull();
-    expect(uri!.host).toBe("github.com");
-    expect(uri!.owner).toBe("owner");
-    expect(uri!.repo).toBe("repo");
-    expect(uri!.ref).toBe("main");
-  });
-
-  it("parses prime:// repo URI with trailing slash", () => {
-    const uri = parseRepoUri("prime://github.com/owner/repo/main/");
-    expect(uri).not.toBeNull();
-    expect(uri!.ref).toBe("main");
-  });
-
   it("parses GitHub repo URL with @ref", () => {
     const uri = parseRepoUri("https://github.com/owner/repo@develop");
     expect(uri).not.toBeNull();
@@ -177,14 +134,6 @@ describe("parseRepoUri", () => {
     const uri = parseRepoUri("https://github.com/owner/repo@abc123def");
     expect(uri).not.toBeNull();
     expect(uri!.ref).toBe("abc123def");
-  });
-
-  it("parses prime:// immutable repo URI with @commit", () => {
-    const uri = parseRepoUri("prime://github.com/owner/repo@abc123");
-    expect(uri).not.toBeNull();
-    expect(uri!.ref).toBe("abc123");
-    expect(uri!.commit).toBe("abc123");
-    expect(uri!.immutable).toBe(true);
   });
 
   it("sets defaultRef only for bare repo URL", () => {
@@ -209,12 +158,12 @@ describe("parseRepoUri", () => {
 });
 
 describe("isRemoteUrl", () => {
-  it("returns true for prime:// URIs", () => {
-    expect(isRemoteUrl("prime://github.com/owner/repo/main/file.md")).toBe(true);
-  });
-
   it("returns true for https:// URLs", () => {
     expect(isRemoteUrl("https://github.com/owner/repo")).toBe(true);
+  });
+
+  it("returns true for @ alias references", () => {
+    expect(isRemoteUrl("@descartes/cogito.md")).toBe(true);
   });
 
   it("returns false for local paths", () => {

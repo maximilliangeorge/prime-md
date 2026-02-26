@@ -48,7 +48,7 @@ describe("parseNode", () => {
   });
 
   it("classifies remote premises correctly", () => {
-    // parse a node whose premise is a prime:// URI
+    // parse a node whose premise is a remote URL
     // We use parseNode's raw string detection
     const node = parseNode(path.join(validTree, "cogito.md"), validTree);
     // cogito.md only has local premises

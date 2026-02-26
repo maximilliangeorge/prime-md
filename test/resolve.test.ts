@@ -45,10 +45,10 @@ describe('resolveAllPremises', () => {
     expect(remoteNodes).toHaveLength(1)
     expect(remoteNodes[0].claim).toBe('Remote axiom A')
     expect(remoteNodes[0].isAxiom).toBe(true)
-    expect(remoteNodes[0].filePath).toContain('prime://')
+    expect(remoteNodes[0].filePath).toContain('https://github.com')
   })
 
-  it('sets resolvedPath on the premise to canonical URI', async () => {
+  it('sets resolvedPath on the premise to canonical URL', async () => {
     vi.mocked(readCachedFile).mockResolvedValue(readFixture('axiom-a.md'))
 
     const nodes = [
@@ -62,7 +62,7 @@ describe('resolveAllPremises', () => {
 
     const remotePremise = nodes[0].premises[0]
     expect(remotePremise.resolvedPath).toBe(
-      'prime://github.com/test/repo/main/axiom-a.md',
+      'https://github.com/test/repo/blob/main/axiom-a.md',
     )
     expect(remotePremise.error).toBeUndefined()
   })
@@ -79,7 +79,7 @@ describe('resolveAllPremises', () => {
       remoteFixtures,
     )
     // Override the premise to point to derived-b.md instead
-    node.premises[0].raw = 'prime://github.com/test/repo/main/derived-b.md'
+    node.premises[0].raw = 'https://github.com/test/repo/blob/main/derived-b.md'
 
     const remoteNodes = await resolveAllPremises(
       [node],
@@ -104,7 +104,7 @@ describe('resolveAllPremises', () => {
     // Add a duplicate premise
     node.premises.push({
       kind: 'remote',
-      raw: 'prime://github.com/test/repo/main/axiom-a.md',
+      raw: 'https://github.com/test/repo/blob/main/axiom-a.md',
       resolvedPath: null,
     })
 
@@ -126,7 +126,7 @@ describe('resolveAllPremises', () => {
       path.join(remoteFixtures, 'root-with-remote.md'),
       remoteFixtures,
     )
-    node.premises[0].raw = 'prime://github.com/test/repo/main/derived-b.md'
+    node.premises[0].raw = 'https://github.com/test/repo/blob/main/derived-b.md'
 
     const remoteNodes = await resolveAllPremises(
       [node],
@@ -135,20 +135,18 @@ describe('resolveAllPremises', () => {
       0,
     )
 
-    // maxDepth=0 means don't fetch at all beyond setting resolvedPath
-    // Actually depth 0 means: resolve the first level but don't follow their deps
-    // The premise gets resolved but derived-b's own local premise is not followed
+    // maxDepth=0 means: resolve the first level but don't follow their deps
     // Only derived-b is fetched, not axiom-a
     expect(remoteNodes).toHaveLength(1)
     expect(remoteNodes[0].claim).toBe('Derived claim B')
   })
 
-  it('sets error on invalid URI', async () => {
+  it('sets error on invalid reference', async () => {
     const node = parseNode(
       path.join(remoteFixtures, 'root-with-remote.md'),
       remoteFixtures,
     )
-    node.premises[0].raw = 'prime://invalid'
+    node.premises[0].raw = 'https://invalid'
 
     const remoteNodes = await resolveAllPremises(
       [node],
@@ -157,7 +155,7 @@ describe('resolveAllPremises', () => {
     )
 
     expect(remoteNodes).toHaveLength(0)
-    expect(node.premises[0].error).toContain('Invalid prime URI')
+    expect(node.premises[0].error).toContain('Invalid remote reference')
   })
 
   it('sets error when remote file not found', async () => {

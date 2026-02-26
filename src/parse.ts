@@ -6,7 +6,7 @@ import type { PrimeNode, PremiseRef } from "./types.js";
 const H1_REGEX = /^#\s+(.+)$/m;
 
 function parsePremiseRef(raw: string): PremiseRef {
-  if (raw.startsWith("prime://") || raw.startsWith("https://")) {
+  if (raw.startsWith("https://") || raw.startsWith("@")) {
     return { kind: "remote", raw, resolvedPath: null };
   }
   return { kind: "local", raw, resolvedPath: null };

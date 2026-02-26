@@ -3,7 +3,7 @@ import chalk from "chalk";
 import ora from "ora";
 import { loadRepoSource } from "../repo-source.js";
 import { buildGraph } from "../graph-builder.js";
-import { parseUri, expandAlias, isRemoteUrl } from "../uri.js";
+import { parseUri, expandAlias, isRemoteUrl, canonicalUrl } from "../uri.js";
 import { loadManifest } from "../manifest.js";
 import { isAliasUri } from "../types.js";
 import type { ArgumentGraph, PrimeUri } from "../types.js";
@@ -19,7 +19,7 @@ export async function pluckCommand(
   if (isRemoteUrl(reference)) {
     const parsed = parseUri(reference);
     if (!parsed) {
-      console.error(chalk.red(`Invalid URI: ${reference}`));
+      console.error(chalk.red(`Invalid reference: ${reference}`));
       process.exit(1);
     }
 
@@ -37,7 +37,7 @@ export async function pluckCommand(
     }
 
     sourceInput = `https://${uri.host}/${uri.owner}/${uri.repo}/tree/${uri.ref}`;
-    resolvedPath = `prime://${uri.host}/${uri.owner}/${uri.repo}/${uri.ref}/${uri.path}`;
+    resolvedPath = canonicalUrl(uri);
     spinnerText = `Fetching ${uri.owner}/${uri.repo}…`;
   } else {
     resolvedPath = path.resolve(reference);

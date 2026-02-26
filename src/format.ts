@@ -280,6 +280,18 @@ export function formatDot(graph: ArgumentGraph): string {
   return lines.join('\n')
 }
 
+export function formatRefs(graph: ArgumentGraph): string {
+  const refs: string[] = []
+  for (const [key, node] of graph.nodes) {
+    if (key.startsWith('https://')) {
+      refs.push(key)
+    } else {
+      refs.push(node.relativePath)
+    }
+  }
+  return refs.sort().join('\n')
+}
+
 export function formatJson(graph: ArgumentGraph): string {
   const nodes: Record<string, object> = {}
   for (const [key, node] of graph.nodes) {

@@ -61,7 +61,7 @@ async function loadRemoteRepoSource(
       : await listCachedFiles(repoUri.ref, cacheDir);
 
   const nodes: PrimeNode[] = [];
-  const syntheticRoot = `prime://${repoUri.host}/${repoUri.owner}/${repoUri.repo}/${repoUri.ref}`;
+  const syntheticRoot = `https://${repoUri.host}/${repoUri.owner}/${repoUri.repo}/blob/${repoUri.ref}`;
 
   for (const filePath of filePaths) {
     const content = await readCachedFileByRef(
@@ -106,7 +106,7 @@ function rewriteLocalPremises(
       ? filePath.substring(0, filePath.lastIndexOf("/") + 1)
       : "";
     const resolvedPath = baseDir + localPath;
-    const syntheticUri = `prime://${repoUri.host}/${repoUri.owner}/${repoUri.repo}/${repoUri.ref}/${resolvedPath}`;
+    const syntheticUri = `https://${repoUri.host}/${repoUri.owner}/${repoUri.repo}/blob/${repoUri.ref}/${resolvedPath}`;
 
     premise.kind = "remote";
     premise.raw = syntheticUri;

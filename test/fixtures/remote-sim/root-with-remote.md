@@ -1,6 +1,6 @@
 ---
 premises:
-  - prime://github.com/test/repo/main/axiom-a.md
+  - https://github.com/test/repo/blob/main/axiom-a.md
 ---
 
 # Root claim depending on remote
