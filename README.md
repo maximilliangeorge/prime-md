@@ -14,38 +14,38 @@ If a premise is false, the argument is not _invalid_ but it is _unsound_. The st
 
 What makes a premise false? It, in turn, relies on an either _invalid_ argument or _unsound_ premises (or both!). Every claim rests on other claims and the rot can enter at any level. In the world of code we might call this a dependency graph. A graph can be traversed, and indexed by machine. Follow the chain down and you hit bedrock: unsupported claims, ie. axiomatic truths that can be accepted without argument.
 
-In Prime, we store each claim as a Markdown file in a Git repository. Git already solves the hard problems: versioning, integrity, distribution, attribution. Repositories can reference each other — so an argument in one repo can cite a premise in another, across authors, institutions, and time. The graph is not trapped in one database or one jurisdiction. It lives where code lives, and it moves the way code moves. And I hope Prime can make reason scale the way code scales.
+In Prime, we store each claim as a Markdown file in a Git repository. Git already solves the hard problems: versioning, integrity, distribution, attribution. Repositories can reference each other — so an argument in one repo can cite a premise in another, across authors, institutions, and time. The graph is not trapped in one database. It lives where code lives, and it moves the way code moves. And I hope Prime can make reasoning scale the way code scales.
 
-So, what is Prime? At the end of the day, Prime is just a convention for writing arguments in Markdown, stored in Git repositories + a set of tools that makes it possible to do so collaboratively at scale. Still with me? Keep reading.
+So, what is Prime? At the end of the day, Prime is just a convention for writing arguments in Markdown, stored in Git repositories, and a set of tools that makes it possible to do so collaboratively at scale. Still with me? Keep reading.
 
 ## Usage
 
-No installation required! Run with `npx`:
+No installation required – run with `npx`:
 
 ```sh
 pnpm dev browse https://github.com/maximilliangeorge/prime-demo-cogito
 ```
 
-Or, if you'd rather install it globally:
-
 ```sh
-npm install -g prime
+> The external world exists
+  ├─ Clear and distinct perceptions are reliably true
+  │  ├─ Clear and distinct perception can serve as a criterion of truth
+  │  │  ├─ I exist as a thinking thing
+  │  │  │  ├─ Doubt is itself a form of thought [axiom]
+  │  │  │  ├─ Thinking is occurring [axiom]
+  │  │  │  └─ Thinking requires a thinker [axiom]
+  │  │  └─ Clear and distinct perceptions are irresistible [axiom]
+  │  └─ God is no deceiver
+  │     ├─ God exists
+  │     │  ├─ Clear and distinct perception can serve as a criterion of truth (ref)
+  │     │  └─ The idea of a perfect being requires a cause with infinite reality
+  │     │     ├─ A cause must contain at least as much reality as its effect [axiom]
+  │     │     └─ I possess an idea of a supremely perfect being [axiom]
+  │     └─ Supreme perfection is incompatible with deception [axiom]
+  └─ I clearly and distinctly perceive an external world [axiom]
 ```
 
-## Quick Start
-
-```sh
-# Scaffold a new prime repository
-npx prime init my-argument
-cd my-argument
-
-# Edit the sample axiom or add new .md files
-# Then validate the graph
-npx prime validate
-
-# View the argument structure
-npx prime graph -f tree
-```
+You can also install Prime globally with `npm install -g prime`.
 
 ## Claims
 
@@ -84,21 +84,40 @@ premises:
 Body text explaining the derivation.
 ```
 
-The order of premises does not matter. What matters is that every reference resolves to an existing node. If it doesn't, `prime validate` will report a broken reference.
+The order of premises does not matter. What matters is that every reference resolves to an existing node. If it doesn't, `prime validate` will report a broken reference. Prime will also yell at you for creating circular logic, ie. premises that reference themselves directly or indirectly.
 
 It is possible to reference claims in other Git repositories. We currently support Github but are exploring other platforms and even our own URI structure.
 
 ```markdown
 ---
 premises:
-  - https://github.com/maximilliangeorge/prime-demo-cogito/blob/main/thinking.md
   - https://github.com/maximilliangeorge/prime-demo-cogito/blob/main/thinker.md
+  - https://github.com/maximilliangeorge/prime-demo-cogito/blob/main/thinking.md
   - https://github.com/maximilliangeorge/prime-demo-cogito/blob/main/doubt-is-thought.md
 ---
 
 # I exist as a thinking thing
 
-If thinking is occurring, and thinking requires a thinker, then a thinker exists. Could a deceiver make me wrong about this? No — because doubt is itself thought, so the very act of being deceived confirms that I, the one being deceived, am thinking and therefore exist. _Cogito, ergo sum._
+If thinking is occurring, and thinking requires a thinker, then a thinker exists.
+Could a deceiver make me wrong about this? No — doubt is itself thought, so the act of being deceived confirms that I,
+the one being deceived, am thinking and therefore exist. _Cogito, ergo sum._
+```
+
+You can tidy this up by defining aliases in prime.yaml`
+
+```markdown
+---
+premises:
+  - @descartes/cogito/thinker.md
+  - @descartes/cogito/thinking.md
+  - @descartes/cogito/doubt-is-thought.md
+---
+
+# I exist as a thinking thing
+
+If thinking is occurring, and thinking requires a thinker, then a thinker exists.
+Could a deceiver make me wrong about this? No — doubt is itself thought, so the act of being deceived confirms that I,
+the one being deceived, am thinking and therefore exist. _Cogito, ergo sum._
 ```
 
 ### Graph Traversal
@@ -106,7 +125,7 @@ If thinking is occurring, and thinking requires a thinker, then a thinker exists
 - Files prefixed with `_` are ignored (e.g. `_CONTRIBUTORS.md`)
 - `README.md` is always ignored
 - All other `.md` files are discovered recursively.
-- Links to remote repositories are loaded so that you can explore the entire chain of reasoning.
+- Links to remote repositories are loaded on the fly so that you can explore the entire chain of reasoning.
 
 ## Commands
 
