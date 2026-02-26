@@ -131,6 +131,10 @@ the one being deceived, am thinking and therefore exist. _Cogito, ergo sum._
 
 Create a new prime repository. Initializes a Git repo, writes a sample axiom (`first-principles.md`), and creates a `prime.yaml` manifest.
 
+### `npx prime-md browse [dir | url]`
+
+Interactively browse the argument graph. Read an argument with Enter. Switch between modes with Tab.
+
 ### `npx prime-md validate [dir | url]`
 
 Check the argument graph for structural errors: cycles, broken references, missing claims. Exits with code 1 if invalid.
@@ -144,39 +148,12 @@ Display the argument graph. Supports multiple output formats:
 - `-f dot` — Graphviz DOT format
 - `-f json` — machine-readable JSON
 
-### `npx prime-md browse [dir | url]`
-
-TBD
-
 ### `npx prime-md show <ref>`
 
 Display a single node. Accepts a local file path or a `prime://` URI. Shows the claim, its type (axiom or derived), premises, and body text.
 
-## Prime URI Scheme
+## Contributing
 
-Remote premises are referenced via `prime://` URIs:
-
-```
-prime://github.com/owner/repo/main/path/to/claim.md
-```
-
-Pin to a specific commit for immutability:
-
-```
-prime://github.com/owner/repo@abc123/path/to/claim.md
-```
-
-Define aliases in `prime.yaml` to avoid repeating full URIs:
-
-```yaml
-remotes:
-  logic: github.com/owner/foundations
-```
-
-Then reference as:
-
-```
-prime://@logic/axioms/identity.md
-```
+[CODE BUT ALSO USING THE TOOL AND BUILDING THE GRAPH; CALL TO PHILOSOPHERS AND SCIENTISTS]
 
 ## License
