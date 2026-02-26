@@ -8,7 +8,7 @@ A machine-readable graph of truth claims, built on Git and Markdown.
 
 What makes a good argument? A _good_ argument is true.
 
-A _valid_ argument is one where its conclusion follows from its premises. Validity is purely structural — it has nothing to do with truth.
+A _valid_ argument is one where the truth of the premises logically guarantees the truth of the conclusion. Validity is purely structural — it has nothing to do with truth.
 
 If a premise is false, the argument is not _invalid_ but it is _unsound_. The structure still holds; the foundation does not.
 
@@ -23,7 +23,7 @@ So, what is Prime? At the end of the day, Prime is just a convention for writing
 No installation required – run with `npx`:
 
 ```sh
-pnpm dev browse https://github.com/maximilliangeorge/prime-demo-cogito
+npx prime-md browse https://github.com/maximilliangeorge/prime-demo-cogito
 ```
 
 ```
@@ -45,7 +45,7 @@ pnpm dev browse https://github.com/maximilliangeorge/prime-demo-cogito
   └─ I clearly and distinctly perceive an external world [axiom]
 ```
 
-You can also install Prime globally with `npm install -g prime`.
+You can also install Prime globally with `npm install -g prime-md`.
 
 ## Claims
 
@@ -129,15 +129,15 @@ the one being deceived, am thinking and therefore exist. _Cogito, ergo sum._
 
 ## Commands
 
-### `prime init [dir]`
+### `npx prime-md init [dir]`
 
 Create a new prime repository. Initializes a Git repo, writes a sample axiom (`first-principles.md`), and creates a `prime.yaml` manifest.
 
-### `prime validate [dir | url]`
+### `npx prime-md validate [dir | url]`
 
 Check the argument graph for structural errors: cycles, broken references, missing claims. Exits with code 1 if invalid.
 
-### `prime graph [dir | url]`
+### `npx prime-md graph [dir | url]`
 
 Display the argument graph. Supports multiple output formats:
 
@@ -146,11 +146,11 @@ Display the argument graph. Supports multiple output formats:
 - `-f dot` — Graphviz DOT format
 - `-f json` — machine-readable JSON
 
-### `prime browse [dir | url]`
+### `npx prime-md browse [dir | url]`
 
 TBD
 
-### `prime show <ref>`
+### `npx prime-md show <ref>`
 
 Display a single node. Accepts a local file path or a `prime://` URI. Shows the claim, its type (axiom or derived), premises, and body text.
 
