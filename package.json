@@ -1,7 +1,7 @@
 {
-  "name": "prime",
+  "name": "prime-md",
   "version": "0.1.0",
-  "description": "Make philosophical/scientific argument structure explicit and machine-readable",
+  "description": "A machine-readable graph of truth claims, built on Git and Markdown.",
   "type": "module",
   "bin": {
     "prime": "./dist/cli.js"
