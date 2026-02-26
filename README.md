@@ -1,6 +1,4 @@
-# Prime
-
-(THIS IS STILL A DRAFT)
+# Prime (Draft)
 
 A machine-readable graph of truth claims, built on Git and Markdown.
 
