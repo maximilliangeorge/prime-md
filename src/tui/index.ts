@@ -1,6 +1,6 @@
 import * as readline from 'node:readline'
 import type { ArgumentGraph } from '../types.js'
-import { formatListStructured } from '../format.js'
+import { formatTreeStructured } from '../format.js'
 import { createState } from './state.js'
 import {
   enterAltScreen,
@@ -21,7 +21,7 @@ export function initTui(graph: ArgumentGraph, rootDir: string): void {
     process.exit(1)
   }
 
-  const lines = formatListStructured(graph)
+  const lines = formatTreeStructured(graph)
   const state = createState(graph, rootDir, lines)
 
   // Enter alternate screen

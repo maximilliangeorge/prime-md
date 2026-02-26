@@ -44,7 +44,7 @@ export function createState(
   return {
     graph,
     rootDir,
-    viewMode: 'list',
+    viewMode: 'tree',
     lines,
     cursorIndex: 0,
     scrollOffset: 0,
