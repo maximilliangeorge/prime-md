@@ -14,7 +14,7 @@ What makes a premise false? It, in turn, relies on an either _invalid_ argument 
 
 In Prime, we store each claim as a Markdown file in a Git repository. Git already solves the hard problems: versioning, integrity, distribution, attribution. Repositories can reference each other — so an argument in one repo can cite a premise in another, across authors, institutions, and time. The graph is not trapped in one database. It lives where code lives, and it moves the way code moves. And I hope Prime can make reasoning scale the way code scales.
 
-So, what is Prime? At the end of the day, Prime is just a convention for writing arguments in Markdown, stored in Git repositories, and a set of tools that makes it possible to do so collaboratively at scale. Still with me? Keep reading.
+So, what is Prime? At the end of the day, Prime is just a convention for writing arguments in Markdown, stored in Git repositories, and a set of tools that makes it possible to do so collaboratively at scale with LLMs. Still with me? Keep reading.
 
 ## Usage
 
@@ -135,9 +135,11 @@ Create a new prime repository. Initializes a Git repo, writes a sample axiom (`f
 
 Interactively browse the argument graph. Read an argument with Enter. Switch between modes with Tab.
 
-### `npx prime-md validate [dir | url]`
+### `npx prime-md pluck <ref>`
 
-Check the argument graph for structural errors: cycles, broken references, missing claims. Exits with code 1 if invalid.
+Extract a claim and its full premise structure as self-contained markdown. Each premise is expanded inline with its type, body, and sub-premises, using hierarchical numbering (`1:`, `1.1:`, `1.1.1:`, etc.). Use `--depth` to limit how deep premises are expanded.
+
+Useful for looping through partial views of an argument with an LLM.
 
 ### `npx prime-md graph [dir | url]`
 
@@ -148,15 +150,13 @@ Display the argument graph. Supports multiple output formats:
 - `-f dot` — Graphviz DOT format
 - `-f json` — machine-readable JSON
 
+### `npx prime-md validate [dir | url]`
+
+Check the argument graph for structural errors: cycles, broken references, missing claims. Exits with code 1 if invalid.
+
 ### `npx prime-md show <ref>`
 
 Display a single node. Accepts a local file path or a `prime://` URI. Shows the claim, its type (axiom or derived), premises, and body text.
-
-### `npx prime-md pluck <ref>`
-
-Extract a claim and its full premise structure as a self-contained markdown document. Each premise is expanded inline with its type, body, and sub-premises, using hierarchical numbering (`1:`, `1.1:`, `1.1.1:`, etc.). Use `--depth` to limit how deep premises are expanded.
-
-Designed for handing off a partial view of an argument to an LLM for evaluation.
 
 ## Contributing
 
