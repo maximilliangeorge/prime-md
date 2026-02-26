@@ -12,7 +12,7 @@ A _valid_ argument is one where its conclusion follows from its premises. Validi
 
 If a premise is false, the argument is not _invalid_ but it is _unsound_. The structure still holds; the foundation does not.
 
-What makes a premise false? It, in turn, relies on an either _invalid_ argument or _unsound_ premises (or both!). Every claim rests on other claims and the rot can enter at any level. In the world of code we might call this a dependency graph. A graph can be traversed, and indexed by machine. Follow the chain down and you hit bedrock: unsupported claims, ie. axiomatic truths that can be accepted without argument.
+What makes a premise false? It, in turn, relies on an either _invalid_ argument or _unsound_ premises (or both!). Every claim rests on other claims and the rot can enter at any level. In the world of code we might call this a dependency graph. A graph can be traversed, and indexed by machine. Follow the chain down and you hit bedrock: unsupported claims, e.g. axiomatic truths that can be accepted without argument.
 
 In Prime, we store each claim as a Markdown file in a Git repository. Git already solves the hard problems: versioning, integrity, distribution, attribution. Repositories can reference each other — so an argument in one repo can cite a premise in another, across authors, institutions, and time. The graph is not trapped in one database. It lives where code lives, and it moves the way code moves. And I hope Prime can make reasoning scale the way code scales.
 
@@ -49,7 +49,7 @@ You can also install Prime globally with `npm install -g prime`.
 
 ## Claims
 
-Every `.md` file in a prime repository is a node in the graph. One file, one claim. The H1 heading is the claim itself — the thing being asserted. The body is optional; use it for elaboration, evidence, or context. Prime does not parse or validate the body. It only cares about structure. But whoever is traversing your claim will probably want you to elaborate on it.
+Every `.md` file in a prime repository represents a claim and a node in the graph. One file, one claim. The H1 heading is the claim itself — the thing being asserted. The body is optional; use it for elaboration, evidence, or context. Prime does not parse or validate the body. It only cares about structure. But whoever is reading your claim will probably want you to elaborate on it.
 
 There are two kinds of claims: axioms and derived claims.
 
@@ -84,7 +84,7 @@ premises:
 Body text explaining the derivation.
 ```
 
-The order of premises does not matter. What matters is that every reference resolves to an existing node. If it doesn't, `prime validate` will report a broken reference. Prime will also yell at you for creating circular logic, ie. premises that reference themselves directly or indirectly.
+The order of premises does not matter. What matters is that every reference resolves to an existing node. If it doesn't, `prime validate` will report a broken reference. Prime will also yell at you for creating circular logic, e.g. premises that reference themselves directly or indirectly.
 
 It is possible to reference claims in other Git repositories. We currently support Github but are exploring other platforms and even our own URI structure.
 
@@ -103,7 +103,7 @@ Could a deceiver make me wrong about this? No — doubt is itself thought, so th
 the one being deceived, am thinking and therefore exist. _Cogito, ergo sum._
 ```
 
-You can tidy this up by defining aliases in prime.yaml`
+You can tidy this up by defining aliases in `prime.yaml`
 
 ```markdown
 ---
