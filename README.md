@@ -1,4 +1,4 @@
-# Prime (Draft)
+# Prime
 
 A machine-readable graph of truth claims, built on Git and Markdown.
 
@@ -12,7 +12,7 @@ If a premise is false, the argument is not _invalid_ but it is _unsound_. The st
 
 What makes a premise false? It, in turn, relies on an either _invalid_ argument or _unsound_ premises (or both!). Every claim rests on other claims and the rot can enter at any level. In the world of code we might call this a dependency graph. A graph can be traversed, and indexed by machine. Follow the chain down and you hit bedrock: unsupported claims, e.g. axiomatic truths that can be accepted without argument.
 
-In Prime, we store each claim as a Markdown file in a Git repository. Git already solves the hard problems: versioning, integrity, distribution, attribution. Repositories can reference each other — so an argument in one repo can cite a premise in another, across authors, institutions, and time. The graph is not trapped in one database. It lives where code lives, and it moves the way code moves. And I hope Prime can make reasoning scale the way code scales.
+In Prime, we store each claim as a Markdown file in a Git repository. Git already solves the hard problems: versioning, integrity, distribution, attribution. Repositories can reference each other — so an argument in one repo can cite a premise in another, across authors, institutions, and time. The graph is not trapped in one database. It lives where code lives, and it moves the way code moves. And I hope Prime can make deductive reasoning scale the way code scales.
 
 So, what is Prime? At the end of the day, Prime is just a convention for writing arguments in Markdown, stored in Git repositories, and a set of tools that makes it possible to do so collaboratively at scale with LLMs. Still with me? Keep reading.
 
@@ -451,6 +451,7 @@ Check out the examples in the [examples](examples) directory.
 
 - [Cogito ergo sum in a single directory](examples/cogito/README.md)
 - [Cogito ergo sum with remote refs](examples/cogito-remote/README.md)
+- [Experiment with automated LLM critique](examples/llm-critique/README.md)
 
 ## Contributing
 
