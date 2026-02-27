@@ -56,7 +56,7 @@ Every `.md` file in a prime repository represents a claim and a node in the grap
 
 There are two kinds of claims: axiomatic claims and derived claims.
 
-### Axiomatic Claims
+### Axiomatic claims
 
 An axiom is a claim with no premises. It stands on its own — accepted without argument. In practice, these are your starting points: definitions, observations, or assumptions you choose not to defend further.
 
