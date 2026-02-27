@@ -122,6 +122,8 @@ the one being deceived, am thinking and therefore exist. _Cogito, ergo sum._
 
 - Files prefixed with `_` are ignored (e.g. `_CONTRIBUTORS.md`)
 - `README.md` is always ignored
+- Directories starting with `.` are ignored (e.g. `.claude`, `.git`)
+- Paths matched by `.gitignore` files are ignored (at any directory level)
 - All other `.md` files are discovered recursively.
 - Links to remote repositories are loaded on the fly so that you can explore the entire chain of reasoning.
 
