@@ -14,7 +14,12 @@ What makes a premise false? It, in turn, relies on an argument that is either _i
 
 In Prime, we store each claim as a Markdown file in a Git repository. Git already solves the hard problems: versioning, integrity, distribution, attribution. Repositories can reference each other — so an argument in one repo can cite a premise in another, across authors, institutions, and time. The graph is not trapped in one database. It lives where code lives, and it moves the way code moves. And I hope Prime can make deductive reasoning scale the way code scales.
 
-So, what is Prime? At the end of the day, Prime is just a convention for writing arguments in Markdown, stored in Git repositories, and a set of tools that makes it possible to do so collaboratively at scale with LLMs. Still with me? Keep reading.
+So, what is Prime? At the end of the day, Prime is just a convention for writing arguments in Markdown, stored in Git repositories, and a set of tools that makes it possible to do so collaboratively at scale with LLMs.
+
+Further reading:
+
+- [Deductive Reasoning](https://en.wikipedia.org/wiki/Deductive_reasoning)
+- [Validity and Soundness](https://iep.utm.edu/val-snd/)
 
 ## Usage
 
