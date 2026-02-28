@@ -2,6 +2,8 @@
 
 A machine-readable graph of truth claims, built on Git and Markdown.
 
+![Prime Screenshot](/Screenshot.png?raw=true)
+
 ## What is Prime?
 
 What makes a good argument? A _good_ argument is true.
