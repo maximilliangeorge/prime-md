@@ -134,6 +134,26 @@ the one being deceived, am thinking and therefore exist. _Cogito, ergo sum._
 - All other `.md` files are discovered recursively.
 - Links to remote repositories are loaded on the fly so that you can explore the entire chain of reasoning.
 
+## Manifest (`prime.yaml`)
+
+Every prime repository can include a `prime.yaml` file at its root. This manifest serves two purposes: defining **remotes** (aliases for external repositories) and declaring **exports** (the entry-point claims your repository exposes to others).
+
+```yaml
+remotes:
+  descartes: github.com/descartes/meditations
+  gettier: github.com/gettier/original-paper@abc123def
+
+exports:
+  - external-world.md
+  - cogito.md
+```
+
+**Remotes** map short aliases to repository URLs. Once defined, premises can reference them with `@alias/path.md` instead of writing full URLs — e.g. `@descartes/cogito.md`. You can pin a remote to a specific commit by appending `@<sha>`, or point it at a particular branch by appending `/<branch>`.
+
+**Exports** list the claims that represent the "public interface" of your repository — the top-level conclusions you want others to cite. This is optional but useful for tooling and discovery.
+
+Running `prime init` generates a `prime.yaml` with empty remotes and a default export.
+
 ## Commands
 
 ### `npx prime-md init [dir]`
@@ -459,6 +479,7 @@ Check out the examples in the [examples](examples) directory.
 - [Cogito ergo sum in a single directory](examples/cogito/README.md)
 - [Cogito ergo sum with remote refs](examples/cogito-remote/README.md)
 - [Experiment with automated LLM critique](examples/llm-critique/README.md)
+- [Nāgārjuna's argument for Śūnyatā](examples/sunyata/README.md)
 
 ## Contributing
 
