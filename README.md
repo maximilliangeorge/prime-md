@@ -558,13 +558,13 @@ Full TypeScript definitions are included — all types (`PrimeNode`, `ArgumentGr
 
 ## Examples
 
-Check out the examples in the [examples](examples) directory, or [explore them interactively](https://maximilliangeorge.github.io/prime/).
+Check out the examples in the [examples](examples) directory, or [explore them interactively](https://maximilliangeorge.github.io/prime-md/).
 
-- [Cogito ergo sum in a single directory](examples/cogito/README.md) · [view graph](https://maximilliangeorge.github.io/prime/#cogito)
-- [Cogito ergo sum with remote refs](examples/cogito-remote/README.md) · [view graph](https://maximilliangeorge.github.io/prime/#cogito-remote)
-- [Experiment with automated LLM critique](examples/llm-critique/README.md) · [view graph](https://maximilliangeorge.github.io/prime/#llm-critique)
-- [Nāgārjuna's argument for Śūnyatā](examples/sunyata/README.md) · [view graph](https://maximilliangeorge.github.io/prime/#sunyata)
-- [Wittgenstein's Tractatus](examples/tractatus/README.md) · [view graph](https://maximilliangeorge.github.io/prime/#tractatus)
+- [Cogito ergo sum in a single directory](examples/cogito/README.md) · [view graph](https://maximilliangeorge.github.io/prime-md/#cogito)
+- [Cogito ergo sum with remote refs](examples/cogito-remote/README.md) · [view graph](https://maximilliangeorge.github.io/prime-md/#cogito-remote)
+- [Experiment with automated LLM critique](examples/llm-critique/README.md) · [view graph](https://maximilliangeorge.github.io/prime-md/#llm-critique)
+- [Nāgārjuna's argument for Śūnyatā](examples/sunyata/README.md) · [view graph](https://maximilliangeorge.github.io/prime-md/#sunyata)
+- [Wittgenstein's Tractatus](examples/tractatus/README.md) · [view graph](https://maximilliangeorge.github.io/prime-md/#tractatus)
 
 ## Contributing
 

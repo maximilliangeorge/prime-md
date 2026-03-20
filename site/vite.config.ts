@@ -5,5 +5,5 @@ import { primePlugin } from './src/server/prime-plugin'
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), primePlugin()],
-  base: '/prime/',
+  base: '/prime-md/',
 })

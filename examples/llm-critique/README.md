@@ -1,6 +1,6 @@
 # LLM Critique
 
-[View interactive graph](https://maximilliangeorge.github.io/prime/#llm-critique)
+[View interactive graph](https://maximilliangeorge.github.io/prime-md/#llm-critique)
 
 A quick experiment with Claude to critique each claim in a graph.
 
