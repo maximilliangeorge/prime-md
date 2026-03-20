@@ -115,7 +115,7 @@ function discoverExamples(examplesDir: string): ExampleEntry[] {
       const lines = readme.split('\n')
       for (const line of lines) {
         const trimmed = line.trim()
-        if (trimmed && !trimmed.startsWith('#')) {
+        if (trimmed && !trimmed.startsWith('#') && !trimmed.startsWith('[')) {
           description = trimmed
           break
         }
