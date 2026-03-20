@@ -558,12 +558,13 @@ Full TypeScript definitions are included — all types (`PrimeNode`, `ArgumentGr
 
 ## Examples
 
-Check out the examples in the [examples](examples) directory.
+Check out the examples in the [examples](examples) directory, or [explore them interactively](https://maximilliangeorge.github.io/prime/).
 
-- [Cogito ergo sum in a single directory](examples/cogito/README.md)
-- [Cogito ergo sum with remote refs](examples/cogito-remote/README.md)
-- [Experiment with automated LLM critique](examples/llm-critique/README.md)
-- [Nāgārjuna's argument for Śūnyatā](examples/sunyata/README.md)
+- [Cogito ergo sum in a single directory](examples/cogito/README.md) · [view graph](https://maximilliangeorge.github.io/prime/#cogito)
+- [Cogito ergo sum with remote refs](examples/cogito-remote/README.md) · [view graph](https://maximilliangeorge.github.io/prime/#cogito-remote)
+- [Experiment with automated LLM critique](examples/llm-critique/README.md) · [view graph](https://maximilliangeorge.github.io/prime/#llm-critique)
+- [Nāgārjuna's argument for Śūnyatā](examples/sunyata/README.md) · [view graph](https://maximilliangeorge.github.io/prime/#sunyata)
+- [Wittgenstein's Tractatus](examples/tractatus/README.md) · [view graph](https://maximilliangeorge.github.io/prime/#tractatus)
 
 ## Contributing
 

@@ -1,5 +1,7 @@
 # Śūnyatā
 
+[View interactive graph](https://maximilliangeorge.github.io/prime/#sunyata)
+
 Nāgārjuna's Mādhyamaka argument for emptiness (*śūnyatā*) encoded as a Prime argument graph. Starting from dependent origination and the analysis of intrinsic nature, the argument establishes that all phenomena — including emptiness itself — are empty of svabhāva.
 
 ## Structure

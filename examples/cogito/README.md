@@ -1,5 +1,7 @@
 # Cogito
 
+[View interactive graph](https://maximilliangeorge.github.io/prime/#cogito)
+
 Descartes' *Meditations on First Philosophy* encoded as a Prime argument graph. Starting from the bare fact that thinking is occurring, the argument builds through the *cogito*, a criterion of truth, proofs of God's existence and veracity, and finally concludes that the external world exists.
 
 ## Structure

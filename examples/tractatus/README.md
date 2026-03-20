@@ -1,5 +1,7 @@
 # Tractatus Logico-Philosophicus
 
+[View interactive graph](https://maximilliangeorge.github.io/prime/#tractatus)
+
 Wittgenstein's *Tractatus Logico-Philosophicus* (1921) encoded as a Prime argument graph. The book's 526 numbered propositions are distilled into 16 nodes that trace the central argument: from the ontology of facts and objects, through the picture theory of meaning and the saying/showing distinction, to the self-undermining conclusion that the book's own propositions are senseless — and that one must be silent.
 
 ## Structure

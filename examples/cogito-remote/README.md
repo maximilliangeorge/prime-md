@@ -1,5 +1,7 @@
 # Cogito Remote
 
+[View interactive graph](https://maximilliangeorge.github.io/prime/#cogito-remote)
+
 Demonstrates cross-repository references. This repo contains a single derived claim (`external-world.md`) whose premises point to nodes in an external repository (`prime-demo-cogito` on GitHub).
 
 ## Structure
